@@ -4,9 +4,7 @@ require("dotenv").config({
 
 const contentfulConfig = {
   spaceId: process.env.CONTENTFUL_SPACE_ID,
-  accessToken:
-    process.env.CONTENTFUL_ACCESS_TOKEN ||
-    process.env.CONTENTFUL_DELIVERY_TOKEN,
+  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
 };
 
 // If you want to use the preview API please define
@@ -43,7 +41,12 @@ module.exports = {
     "gatsby-transformer-remark",
     "gatsby-transformer-sharp",
     "gatsby-plugin-react-helmet",
-    "gatsby-plugin-sass",
+    {
+      resolve: "gatsby-plugin-sass",
+      options: {
+        implementation: require("sass"),
+      },
+    },
     "gatsby-plugin-sharp",
     {
       resolve: "gatsby-source-contentful",
