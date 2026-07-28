@@ -1,64 +1,53 @@
-# Contentful Gatsby Starter Blog
+# Weed Wāhine
 
-Create a [Gatsby](http://gatsbyjs.com/) blog powered by [Contentful](https://www.contentful.com). This is a simplified version of the [Gatsby Contentful Starter](https://github.com/contentful-userland/gatsby-contentful-starter) which is maintained by our Community.
+Cannabis education from Aotearoa — a website for wāhine toa exploring plant medicine, wellness, and reconnecting with the tapu relationship between cannabis and female spirituality.
 
-![The index page of the starter blog](https://rawgit.com/contentful-userland/gatsby-contentful-starter/master/screenshot.jpg "The index page of the starter blog")
+Live content (blog posts, author info) is managed in Contentful; the site itself is a static Gatsby build.
 
-Static sites are scalable, secure and have very little required maintenance. They come with a drawback though. Not everybody feels good editing files, building a project and uploading it somewhere. This is where Contentful comes into play.
+## Tech stack
 
-With Contentful and Gatsby you can connect your favorite static site generator with an API that provides an easy to use interface for people writing content and automate the publishing using services like [Travis CI](https://travis-ci.org/) or [Netlify](https://www.netlify.com/).
-
-## Features
-
-- Simple content model and structure. Easy to adjust to your needs.
-- Use the [synchronization feature](https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/synchronization) of our [Delivery API](https://www.contentful.com/developers/docs/references/content-delivery-api/).
-- Responsive/adaptive images via [gatsby-image](https://www.gatsbyjs.org/packages/gatsby-image/) and our [Images API](https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/synchronization/initial-synchronization-of-entries-of-a-specific-content-type).
+- [Gatsby 2](https://www.gatsbyjs.com/) (React static site generator)
+- [Contentful](https://www.contentful.com) as the CMS
+- Sass for styling (compiled via [Dart Sass](https://sass-lang.com/dart-sass), not `node-sass`)
+- Netlify for hosting/deploys
 
 ## Getting started
 
-See our [official Contentful getting started guide](https://www.contentful.com/developers/docs/tutorials/general/get-started/).
+### Prerequisites
 
-### Get the source code and install dependencies.
+This project's dependency versions are old (Gatsby 2, `sharp`), so a few things matter:
 
+- **Node 16**, run under Rosetta if you're on Apple Silicon (`arch -x86_64 zsh`, then `nvm use 16`). Newer Node versions fail to build the native `sharp` image-processing module.
+- A `.env.development` file with:
+  ```
+  CONTENTFUL_SPACE_ID=your-space-id
+  CONTENTFUL_ACCESS_TOKEN=your-delivery-api-token
+  ```
+
+### Install & run
+
+```bash
+npm install
+npm run dev
 ```
-$ git clone https://github.com/contentful/starter-gatsby-blog.git
-$ npm install
-```
 
-Or use the [Gatsby CLI](https://www.npmjs.com/package/gatsby-cli).
+Site runs at `http://localhost:8000`, GraphiQL explorer at `http://localhost:8000/___graphql`.
 
-```
-$ gatsby new contentful-starter-blog https://github.com/contentful/starter-gatsby-blog/
-```
+### Other scripts
 
-### Set up of the needed content model and create a configuration file
+- `npm run build` — production build to `./public`
+- `npm run serve` — serve the production build locally
+- `npm run netlify:deploy` — deploy `./public` to Netlify
 
-This project comes with a Contentful setup command `npm run setup`.
+## Project structure
 
-This command will ask you for a space ID, and access tokens for the Contentful Management and Delivery API and then import the needed content model into the space you define and write a config file (`./.contentful.json`).
+- `src/pages/` — top-level routes (home, blog index, contact, shop)
+- `src/templates/` — page templates driven by Contentful data (e.g. blog posts)
+- `src/components/` — shared components (Hero, Layout, Navigation, etc.)
+- `src/assets/` — images and fonts
+- `gatsby-config.js` — plugin config, including the Contentful source and Sass setup
 
-`npm run setup` automates that for you but if you want to do it yourself rename `.contentful.json.sample` to `.contentful.json` and add your configuration in this file.
+## Notes
 
-## Crucial Commands
-
-### `npm run dev`
-
-Run the project locally with live reload in development mode.
-
-### `npm run build`
-
-Run a production build into `./public`. The result is ready to be put on any static hosting you prefer.
-
-### `npm run serve`
-
-Spin up a production-ready server with your blog. Don't forget to build your page beforehand.
-
-## Deployment
-
-See the [official Contentful getting started guide](https://www.contentful.com/developers/docs/tutorials/general/get-started/).
-
-## Contribution
-
-Feel free to open pull requests to fix bugs. If you want to add features, please have a look at the [original version](https://github.com/contentful-userland/gatsby-contentful-starter). It is always open to contributions and pull requests.
-
-You can learn more about how Contentful userland is organized by visiting [our about repository](https://github.com/contentful-userland/about).
+- Styling uses `gatsby-plugin-sass` configured to use the `sass` (Dart Sass) package rather than the default `node-sass`, since `node-sass`'s native build doesn't compile on modern toolchains.
+- The site's hero image is a local asset (`src/assets/cannabis-banner.jpg`), not pulled from Contentful.
